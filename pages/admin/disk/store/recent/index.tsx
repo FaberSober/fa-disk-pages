@@ -4,7 +4,7 @@ import { Button, Form, Input, Space } from 'antd';
 import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useTableQueryParams } from '@fa/ui';
 import { Disk } from '@/types';
 import { storeFileApi as api } from '@/services';
-import { DiskContext } from '@/layout/';
+import { DiskContext } from '@/layout';
 import { trim } from 'lodash';
 import { FileIcon } from "@/components";
 
