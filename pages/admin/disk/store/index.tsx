@@ -6,7 +6,7 @@ import All from './alls'
 import Recent from './recent'
 import Recycle from './recycle'
 import Tags from "./tags";
-import { BucketSelBtn } from "@fa-disk-pages/layout";
+import { BucketSelBtn } from "@/layout";
 
 
 /**

@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
-import {BaseTreeSelect} from '@fa/ui';
+import {BaseTreeSelect, BaseTreeSelectProps} from '@fa/ui';
 import { storeTagApi as api } from '@/services';
 import {Disk} from '@/types';
 import {DiskContext} from "@/layout";
-import {BaseTreeSelectProps} from "@fa/ui/src/components/base-tree-select/BaseTreeSelect";
 
 export interface StoreTagTreeSelectProps extends Omit<BaseTreeSelectProps<Disk.StoreTag, number>, 'serviceApi'> {
 }
