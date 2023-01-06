@@ -1,7 +1,8 @@
 import React, { CSSProperties } from 'react';
 import { Disk } from '@/types';
-import { FaUtils, fileSaveApi } from '@fa/ui';
+import { FaUtils } from '@fa/ui';
 import { FaIcon } from '@fa/icons';
+import { fileSaveApi } from '@/services';
 
 export interface FileIconProps {
   file: Disk.StoreFile;
