@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaFlexRestLayout, FaIcon } from "@fa/ui";
+import { FaFlexRestLayout } from "@fa/ui";
+import { FaIcon } from '@fa/icons';
 import { Menu, MenuProps } from "antd";
 import All from './alls'
 import Recent from './recent'
