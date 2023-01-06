@@ -1,7 +1,6 @@
 import React, { CSSProperties } from 'react';
 import { Disk } from '@/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaUtils, fileSaveApi } from '@fa/ui';
+import { FaIcon, FaUtils, fileSaveApi } from '@fa/ui';
 
 export interface FileIconProps {
   file: Disk.StoreFile;
@@ -23,7 +22,7 @@ export default function FileIcon({ file, width = 20, style }: FileIconProps) {
   if (file.dir) {
     return (
       <div style={divStyle}>
-        <FontAwesomeIcon icon={'fa-solid fa-folder' as any} style={{ width, height: width }} />
+        <FaIcon icon='fa-solid fa-folder' style={{ width, height: width }} />
       </div>
     );
   }
@@ -39,7 +38,7 @@ export default function FileIcon({ file, width = 20, style }: FileIconProps) {
 
   return (
     <div style={divStyle}>
-      <FontAwesomeIcon icon={'fa-solid fa-file-lines' as any} style={{ width, height: width }} />
+      <FaIcon icon='fa-solid fa-file-lines' style={{ width, height: width }} />
     </div>
   );
 }

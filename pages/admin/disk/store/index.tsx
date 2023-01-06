@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
-import {FaFlexRestLayout} from "@fa/ui";
-import {Menu, MenuProps} from "antd";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { useState } from 'react';
+import { FaFlexRestLayout, FaIcon } from "@fa/ui";
+import { Menu, MenuProps } from "antd";
 import All from './alls'
 import Recent from './recent'
 import Recycle from './recycle'
@@ -20,22 +19,22 @@ export default function index() {
     {
       label: '全部文件',
       key: 'all',
-      icon: <FontAwesomeIcon icon={"fa-solid fa-box-archive" as any} />,
+      icon: <FaIcon icon="fa-solid fa-box-archive" />,
     },
     {
       label: '最近文件',
       key: 'recent',
-      icon: <FontAwesomeIcon icon={"fa-solid fa-clock" as any} />,
+      icon: <FaIcon icon="fa-solid fa-clock" />,
     },
     {
       label: '文件标签',
       key: 'tags',
-      icon: <FontAwesomeIcon icon={"fa-solid fa-tags" as any} />,
+      icon: <FaIcon icon="fa-solid fa-tags" />,
     },
     {
       label: '回收站',
       key: 'recycle',
-      icon: <FontAwesomeIcon icon={"fa-solid fa-trash-can" as any} />,
+      icon: <FaIcon icon="fa-solid fa-trash-can" />,
     },
   ]
 
