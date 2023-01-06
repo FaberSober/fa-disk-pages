@@ -6,7 +6,7 @@ import './DiskLayout.scss';
 import { Empty } from 'antd';
 import { storeBucketApi } from '@/services';
 import { find, isNil, trim } from 'lodash';
-import StoreBucketModal from "@fa-disk-pages/pages/admin/disk/buckets/modal/StoreBucketModal";
+import StoreBucketModal from "@features/fa-disk-pages/pages/admin/disk/buckets/modal/StoreBucketModal";
 
 /**
  * 网盘布局文件

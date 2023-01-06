@@ -5,10 +5,9 @@ import { ApiEffectLayoutContext, AuthDelBtn, BaseTree, Fa, FaHref, useDelete } f
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import { dispatch } from 'use-bus';
-import { storeTagApi } from '@/services';
+import { storeTagApi, storeTagApi as api } from '@/services';
 import { DiskContext } from '@/layout';
-import { storeTagApi as api } from '@/services';
-import StoreTagModal from "@fa-disk-pages/pages/admin/disk/store/tags/modal/StoreTagModal";
+import StoreTagModal from "@features/fa-disk-pages/pages/admin/disk/store/tags/modal/StoreTagModal";
 
 /**
  * Store Tag Menu Manage

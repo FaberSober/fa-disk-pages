@@ -1,4 +1,4 @@
-import { GATE_APP } from '@/configs/server.config';
+import { GATE_APP } from '@/configs';
 import { BaseTreeApi } from '@fa/ui';
 import { Fa } from '@fa/ui';
 import { Disk } from '@/types';

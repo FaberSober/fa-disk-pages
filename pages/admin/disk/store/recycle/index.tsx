@@ -7,7 +7,7 @@ import { Disk } from '@/types';
 import { storeFileApi as api } from '@/services';
 import { DiskContext } from '@/layout';
 import { FileIcon } from '@/components';
-import StoreFilePutBackToModal from "@fa-disk-pages/pages/admin/disk/store/recycle/modal/StoreFilePutBackToModal";
+import StoreFilePutBackToModal from "@features/fa-disk-pages/pages/admin/disk/store/recycle/modal/StoreFilePutBackToModal";
 
 const serviceName = '最近文件';
 const biz = 'disk_store_file_recent';

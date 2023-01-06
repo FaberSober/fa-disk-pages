@@ -5,7 +5,7 @@ import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, FaberT
 import { Disk } from '@/types';
 import StoreBucketModal from './modal/StoreBucketModal';
 import { storeBucketApi as api } from '@/services';
-import { UserLayoutContext } from "@fa-admin-pages/layout";
+import { UserLayoutContext } from "@/layout";
 import BucketUserList from "./cube/BucketUserList";
 
 const serviceName = '文件仓库';
