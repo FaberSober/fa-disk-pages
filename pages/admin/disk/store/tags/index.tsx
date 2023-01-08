@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Disk } from '@/types';
 import styles from './index.module.scss';
-import { ApiEffectLayoutContext, AuthDelBtn, BaseTree, Fa, FaHref, useDelete } from '@fa/ui';
+import { ApiEffectLayoutContext, AuthDelBtn, BaseTree, BaseTreeContext, Fa, FaHref, useDelete } from '@fa/ui';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
-import { dispatch } from 'use-bus';
 import { storeTagApi, storeTagApi as api } from '@/services';
 import { DiskContext } from '@/layout';
 import StoreTagModal from "@features/fa-disk-pages/pages/admin/disk/store/tags/modal/StoreTagModal";
+import { useCounter } from "react-use";
 
 /**
  * Store Tag Menu Manage
@@ -19,10 +19,11 @@ export default function index() {
   const { loadingEffect } = useContext(ApiEffectLayoutContext);
   const [edit, setEdit] = useState<Fa.TreeNode<Disk.StoreTag, number>>();
   const [open, setOpen] = useState(false);
+  const [current, { inc }] = useCounter(0);
 
   function refreshData() {
     setOpen(false);
-    dispatch({ type: '@@api/BASE_TREE_REFRESH' });
+    inc()
   }
 
   const [handleDelete] = useDelete<number>(storeTagApi.remove, refreshData, '菜单');
@@ -34,52 +35,54 @@ export default function index() {
 
   const loadingTree = loadingEffect[storeTagApi.getUrl('allTree')];
   return (
-    <div className={['fa-full-content', 'fa-flex-column', styles.menuDiv].join(' ')}>
-      <Space style={{ margin: 12 }}>
-        <Button onClick={refreshData} loading={loadingTree}>
-          刷新
-        </Button>
-        <StoreTagModal title="新增标签" fetchFinish={refreshData}>
-          <Button type="primary" icon={<PlusOutlined />} loading={loadingTree}>
-            新增标签
+    <BaseTreeContext.Provider value={{ renderCount: current, updateRenderCount: inc }}>
+      <div className={['fa-full-content', 'fa-flex-column', styles.menuDiv].join(' ')}>
+        <Space style={{ margin: 12 }}>
+          <Button onClick={refreshData} loading={loadingTree}>
+            刷新
           </Button>
-        </StoreTagModal>
-      </Space>
+          <StoreTagModal title="新增标签" fetchFinish={refreshData}>
+            <Button type="primary" icon={<PlusOutlined />} loading={loadingTree}>
+              新增标签
+            </Button>
+          </StoreTagModal>
+        </Space>
 
-      <BaseTree
-        // showRoot
-        showOprBtn
-        onSelect={(keys) => console.log('onSelect', keys)}
-        onAfterDelItem={() => {}}
-        // 自定义配置
-        serviceName="Tree"
-        ServiceModal={StoreTagModal}
-        serviceApi={{
-          ...storeTagApi,
-          allTree: () => api.getTree({ query: { bucketId: bucket.id } }),
-        }}
-        extraEffectArgs={[bucket]}
-        bodyStyle={{ width: '100%', height: '100%' }}
-        showTips={false}
-        showTopBtn={false}
-        // @ts-ignore
-        titleRender={(item: Fa.TreeNode<Disk.StoreTag, number>) => (
-          <div className={styles.item}>
-            <div style={{ width: 15, height: 15, background: item.sourceData.color, marginRight: 8 }} />
-            <div style={{ flex: 1 }}>
-              <div>{item.name}</div>
+        <BaseTree
+          // showRoot
+          showOprBtn
+          onSelect={(keys) => console.log('onSelect', keys)}
+          onAfterDelItem={() => {}}
+          // 自定义配置
+          serviceName="Tree"
+          ServiceModal={StoreTagModal}
+          serviceApi={{
+            ...storeTagApi,
+            allTree: () => api.getTree({ query: { bucketId: bucket.id } }),
+          }}
+          extraEffectArgs={[bucket]}
+          bodyStyle={{ width: '100%', height: '100%' }}
+          showTips={false}
+          showTopBtn={false}
+          // @ts-ignore
+          titleRender={(item: Fa.TreeNode<Disk.StoreTag, number>) => (
+            <div className={styles.item}>
+              <div style={{ width: 15, height: 15, background: item.sourceData.color, marginRight: 8 }} />
+              <div style={{ flex: 1 }}>
+                <div>{item.name}</div>
+              </div>
+              <Space>
+                <FaHref icon={<EditOutlined />} text="编辑" onClick={() => showEditModal(item)} />
+                <AuthDelBtn handleDelete={() => handleDelete(item.id)} />
+              </Space>
             </div>
-            <Space>
-              <FaHref icon={<EditOutlined />} text="编辑" onClick={() => showEditModal(item)} />
-              <AuthDelBtn handleDelete={() => handleDelete(item.id)} />
-            </Space>
-          </div>
-        )}
-        showLine={false}
-        draggable
-      />
+          )}
+          showLine={false}
+          draggable
+        />
 
-      <StoreTagModal title="编辑标签" record={edit?.sourceData} fetchFinish={refreshData} open={open} onCancel={() => setOpen(false)} />
-    </div>
+        <StoreTagModal title="编辑标签" record={edit?.sourceData} fetchFinish={refreshData} open={open} onCancel={() => setOpen(false)} />
+      </div>
+    </BaseTreeContext.Provider>
   );
 }
