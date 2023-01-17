@@ -63,7 +63,7 @@ export default function StoreFileRecentList() {
       },
       {
         ...BaseTableUtils.genSimpleSorterColumn('大小', 'size', 120, sorter),
-        render: (val) => FaUtils.sizeToHuman(val * 1024, 0),
+        render: (val) => FaUtils.sizeToHuman(val, 0),
       },
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),

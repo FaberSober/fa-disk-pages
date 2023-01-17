@@ -82,7 +82,7 @@ export default function StoreFileRecycleList() {
       },
       {
         ...BaseTableUtils.genSimpleSorterColumn('大小', 'size', 100, sorter),
-        render: (_val, r) => (r.dir ? `${r.size}项` : FaUtils.sizeToHuman(r.size * 1024, 0)),
+        render: (_val, r) => (r.dir ? `${r.size}项` : FaUtils.sizeToHuman(r.size, 0)),
       },
       {
         title: '删除时间',

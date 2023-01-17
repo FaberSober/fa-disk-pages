@@ -87,7 +87,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
         if (record.dir) {
           return `${record.size}项`
         }
-        return FaUtils.sizeToHuman(record.size * 1024);
+        return FaUtils.sizeToHuman(record.size);
       },
     },
     {dataIndex: 'crtName', title: '创建者', width: 100},

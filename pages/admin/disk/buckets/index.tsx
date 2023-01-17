@@ -31,7 +31,7 @@ export default function StoreBucketList() {
       BaseTableUtils.genSimpleSorterColumn('库名称', 'name', undefined, sorter),
       {
         ...BaseTableUtils.genSimpleSorterColumn('总文件大小', 'size', 120, sorter),
-        render: (val) => FaUtils.sizeToHuman(val * 1024),
+        render: (val) => FaUtils.sizeToHuman(val),
       },
       BaseTableUtils.genSimpleSorterColumn('文件数量', 'fileCount', 120, sorter),
       BaseTableUtils.genSimpleSorterColumn('目录数量', 'dirCount', 120, sorter),
