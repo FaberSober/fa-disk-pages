@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 import { Disk } from '@/types';
 
 export interface DiskContextProps {
@@ -8,6 +8,6 @@ export interface DiskContextProps {
   addRenderCount: () => void;
 }
 
-const DiskContext = createContext<DiskContextProps>({} as any);
+const DiskContext: React.Context<DiskContextProps> = createContext<DiskContextProps>({} as any);
 
 export default DiskContext;
