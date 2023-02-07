@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Disk } from "@/types";
 import { isNil, trim } from "lodash";
-import { Dropdown, Space, Table, Tag } from "antd";
+import { Drawer, Dropdown, Space, Table, Tag } from "antd";
 import { FaHref, FaUtils } from "@fa/ui";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
@@ -9,6 +9,7 @@ import { TableProps } from "antd/es/table/Table";
 import { storeFileTagApi } from "@/services";
 import StoreDirModal from "../modal/StoreDirModal";
 import { FileIcon } from "@/components";
+import FileSaveDetail from "@features/fa-disk-pages/pages/admin/disk/store/alls/cube/FileSaveDetail";
 
 
 export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'columns'> {
@@ -23,12 +24,21 @@ export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'column
  * @date 2022/12/29 14:09
  */
 export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...props }: FileTableProps) {
+  const [viewItem, setViewItem] = useState<Disk.StoreFile>();
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleRemoveTagLink(linkId: number) {
     storeFileTagApi.remove(linkId).then(res => {
       FaUtils.showResponse(res, '删除标签')
       onRefresh()
     })
+  }
+
+  function handleViewFile(i: Disk.StoreFile) {
+    if (!i.dir) {
+      setViewItem(i)
+      setOpen(true)
+    }
   }
 
   const columns = [
@@ -49,7 +59,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
               }}
             >
               <FileIcon file={r} width={30} style={{marginRight: 6}} />
-              <div>
+              <div className="fa-disk-list-item-name" onClick={() => handleViewFile(r)}>
                 <div>{r.name}</div>
                 {showPath && <div style={{fontSize: '6px', color: '#999'}}>{trim(r.fullPath).split(",").map(i => i.replaceAll('#', '')).join('/')}</div>}
               </div>
@@ -133,12 +143,18 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
   ] as ColumnsType<Disk.StoreFile>
 
   return (
-    <Table
-      rowKey="id"
-      columns={columns}
-      pagination={false}
-      size="small"
-      {...props}
-    />
+    <>
+      <Table
+        rowKey="id"
+        columns={columns}
+        pagination={false}
+        size="small"
+        {...props}
+      />
+
+      <Drawer title="查看文件详情" width={600} open={open} onClose={() => setOpen(false)}>
+        {viewItem && <FileSaveDetail id={viewItem.id} />}
+      </Drawer>
+    </>
   )
 }

@@ -40,3 +40,12 @@
   color: #fff;
   padding: 0 4px;
 }
+
+.fa-disk-list-item-name {
+  cursor: pointer;
+  color: #333;
+}
+
+.fa-disk-list-item-name:hover {
+  color: var(--primary-color);
+}
