@@ -36,11 +36,11 @@ export default function UploadDiskFile({ children, description, onChange, value,
       .catch(() => setLoading(false));
   }, [value]);
 
-  function beforeUpload(file: RcFile) {
-    if (file.name && file.name.indexOf(' ') > -1) {
-      message.error('文件名不能包含空格！');
-      return false;
-    }
+  function beforeUpload(_file: RcFile) {
+    // if (file.name && file.name.indexOf(' ') > -1) {
+    //   message.error('文件名不能包含空格！');
+    //   return false;
+    // }
     // if (this.props.fileTypes && this.props.fileTypes[0]) {
     //   if (this.props.fileTypes.indexOf(file.type) === -1) {
     //     message.error(this.props.fileTypesMsg);
