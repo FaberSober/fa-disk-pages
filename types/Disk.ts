@@ -60,7 +60,11 @@ namespace Disk {
     size: number;
     /** 完整路径 */
     fullPath: string;
+    /** 标签 */
     tags: StoreFileInnerTag[];
+    /** 文件信息 */
+    info: string;
+    /** 是否有删除动作 */
     deleteAction: boolean;
   }
 

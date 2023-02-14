@@ -7,9 +7,9 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import { TableProps } from "antd/es/table/Table";
 import { storeFileTagApi } from "@/services";
-import StoreDirModal from "../modal/StoreDirModal";
 import { FileIcon } from "@/components";
-import FileSaveDetail from "@features/fa-disk-pages/pages/admin/disk/store/alls/cube/FileSaveDetail";
+import StoreDirModal from "../modal/StoreDirModal";
+import FileSaveDetail from "./FileSaveDetail";
 
 
 export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'columns'> {
@@ -25,7 +25,7 @@ export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'column
  */
 export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...props }: FileTableProps) {
   const [viewItem, setViewItem] = useState<Disk.StoreFile>();
-  const [open, setOpen] = useState<boolean>(false);
+
 
   function handleRemoveTagLink(linkId: number) {
     storeFileTagApi.remove(linkId).then(res => {
@@ -37,7 +37,6 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
   function handleViewFile(i: Disk.StoreFile) {
     if (!i.dir) {
       setViewItem(i)
-      setOpen(true)
     }
   }
 
@@ -152,7 +151,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
         {...props}
       />
 
-      <Drawer title="查看文件详情" width={600} open={open} onClose={() => setOpen(false)}>
+      <Drawer title="查看文件详情" width={600} open={viewItem != undefined} onClose={() => setViewItem(undefined)}>
         {viewItem && <FileSaveDetail id={viewItem.id} />}
       </Drawer>
     </>

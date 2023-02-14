@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Disk } from "@/types";
 import { FaUtils, PageLoading } from "@fa/ui";
 import { fileSaveApi, storeFileApi } from "@/services";
-import { Descriptions, Image, QRCode } from "antd";
+import { Descriptions, Image, Input, QRCode } from "antd";
 
 
 export interface FileSaveDetailProps {
@@ -22,11 +22,30 @@ export default function FileSaveDetail({id}: FileSaveDetailProps) {
     })
   }, [id])
 
+  function handleSubmitInfo(e:any) {
+    if (data == undefined) return
+    if (data.info === e.target.value) return;
+
+    data.info = e.target.value
+    storeFileApi.updateInfo(data.id, {info: data.info}).then(res => {
+      FaUtils.showResponse(res, "更新文件备注")
+    })
+  }
+
   if (data == undefined) return <PageLoading />
 
   return (
     <Descriptions bordered column={1} labelStyle={{ width: 120 }}>
       <Descriptions.Item label="名称">{data.name}</Descriptions.Item>
+      <Descriptions.Item label="文件备注">
+        <Input.TextArea
+          className="fa-input-underline"
+          defaultValue={data.info}
+          onBlur={handleSubmitInfo}
+          autoSize
+          maxLength={255}
+        />
+      </Descriptions.Item>
       <Descriptions.Item label="创建人">{data.crtName}</Descriptions.Item>
       <Descriptions.Item label="创建时间">{data.crtTime}</Descriptions.Item>
       {FaUtils.isImg(data.type) && (

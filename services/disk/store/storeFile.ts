@@ -31,6 +31,9 @@ class Api extends BaseTreeApi<Disk.StoreFile, number> {
 
   /** 恢复到 */
   putBackToDir = (fileIds: number[], toDirId: number): Promise<Fa.Ret<boolean>> => this.post('putBackToDir', { fileIds, toDirId });
+
+  /** 更新备注 */
+  updateInfo = (id: number, params: any): Promise<Fa.Ret> => this.post('updateInfo', { id, ...params });
 }
 
 export default new Api(GATE_APP.disk.store, 'file');
