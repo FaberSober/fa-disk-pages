@@ -26,8 +26,9 @@
 }
 
 .fa-disk-upload-file-panel-content {
-  max-height: 400px;
-  overflow: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .fa-disk-upload-file-panel-item {

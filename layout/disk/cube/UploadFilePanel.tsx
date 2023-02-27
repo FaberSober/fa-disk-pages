@@ -31,7 +31,7 @@ export default function UploadFilePanel() {
           {uploadFiles.map(i => {
             return (
               <div key={i.id} className="fa-disk-upload-file-panel-item">
-                <div className="name">{i.fileName}</div>
+                <div className="name fa-break-word">{i.fileName}</div>
                 <Space className="fa-subtitle">
                   <div>{FaUtils.sizeToHuman(i.loaded)}</div>
                   <div>/</div>
