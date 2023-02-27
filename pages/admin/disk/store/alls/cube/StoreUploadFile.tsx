@@ -6,6 +6,7 @@ import { Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from 'uuid';
 import { UploadFileProps } from "@features/fa-disk-pages/layout/disk/context/DiskContext";
+import { isNil } from "lodash";
 
 
 export interface StoreUploadFileProps {
@@ -23,19 +24,32 @@ export default function StoreUploadFile({dirId, onSuccess}: StoreUploadFileProps
   const { bucket, fireUploadFile } = useContext(DiskContext);
 
   function handleInputFileChange(e: any) {
-    const file = e.target.files[0];
-    // console.log('file', file)
-    uploadOneFile(file)
+    const files = [];
+    for (let i = 0; i < e.target.files.length; i+=1) {
+      files.push(e.target.files[i])
+    }
+    uploadFiles(files)
   }
 
-  function uploadOneFile(file:any) {
+  function uploadFiles(files:any[]) {
+    if (isNil(files) || files.length === 0) return;
+
+    uploadOneFile(files[0], () => {
+      files.shift()
+      setTimeout(() => {
+        uploadFiles(files)
+      }, 10)
+    })
+  }
+
+  function uploadOneFile(file:any, onFinish: () => void) {
     const id = uuidv4();
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       // 走自己服务器上传，会占据自己服务器带宽
       fileSaveApi
         .uploadFile(file, (pe) => {
-          console.log('progressEvent', pe);
+          // console.log('progressEvent', pe);
           const fileInfo:UploadFileProps = {
             id,
             fileName: file.name,
@@ -60,6 +74,7 @@ export default function StoreUploadFile({dirId, onSuccess}: StoreUploadFileProps
           storeFileApi.save(params).then((res) => {
             FaUtils.showResponse(res, '上传文件');
             if (onSuccess) onSuccess();
+            if (onFinish) onFinish();
           });
 
           // TODO update progress to layout
@@ -77,7 +92,7 @@ export default function StoreUploadFile({dirId, onSuccess}: StoreUploadFileProps
 
   return (
     <div>
-      <input ref={inputRef} type="file" onChange={handleInputFileChange} style={{display: 'none'}} />
+      <input ref={inputRef} multiple type="file" onChange={handleInputFileChange} style={{display: 'none'}} />
       <Button type="primary" icon={<UploadOutlined />} onClick={triggerClick}>上传文件</Button>
     </div>
   )
