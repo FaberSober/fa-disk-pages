@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Disk } from "@/types";
 import { isNil, trim } from "lodash";
-import { Drawer, Dropdown, Space, Table, Tag } from "antd";
+import { Drawer, Dropdown, Space, Table, TableProps, Tag } from "antd";
+import { ColumnsType } from "antd/es/table";
 import { FaHref, FaUtils } from "@fa/ui";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { ColumnsType } from "antd/es/table";
-import { TableProps } from "antd/es/table/Table";
 import { storeFileTagApi } from "@/services";
 import { FileIcon } from "@/components";
 import StoreDirModal from "../modal/StoreDirModal";

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Fa } from '@fa/ui';
 import { Disk } from '@/types';
-import { DiskContext, DiskContextProps } from '@/layout';
 import './DiskLayout.scss';
 import { Empty } from 'antd';
 import { storeBucketApi } from '@/services';
 import { find, isNil, trim } from 'lodash';
 import StoreBucketModal from "@features/fa-disk-pages/pages/admin/disk/buckets/modal/StoreBucketModal";
+import UploadFilePanel from './cube/UploadFilePanel'
+import DiskContext, { DiskContextProps, UploadFileProps } from './context/DiskContext'
+
 
 /**
  * 网盘布局文件
@@ -16,6 +18,26 @@ import StoreBucketModal from "@features/fa-disk-pages/pages/admin/disk/buckets/m
 export default function DiskLayout({ children }: Fa.BaseChildProps) {
   const [bucket, setBucket] = useState<Disk.StoreBucket>();
   const [renderCount, setRenderCount] = useState<number>(0);
+  const [uploadFiles, setUploadFiles] = useState<UploadFileProps[]>([
+    // {
+    //   id: '1',
+    //   fileName: 'test.png',
+    //   total: 10282051,
+    //   loaded: 9282051,
+    //   progress: 0.9385458212568679,
+    //   rate: 126727,
+    //   status: 'uploading',
+    // },
+    // {
+    //   id: '2',
+    //   fileName: 'test2.png',
+    //   total: 10282051,
+    //   loaded: 10282051,
+    //   progress: 1,
+    //   rate: 126727,
+    //   status: 'success',
+    // }
+  ])
 
   function refreshList() {
     storeBucketApi.getMyList().then((res) => {
@@ -58,12 +80,27 @@ export default function DiskLayout({ children }: Fa.BaseChildProps) {
     },
     renderCount,
     addRenderCount: () => setRenderCount((i) => i + 1),
+    uploadFiles,
+    fireUploadFile: (v) => {
+      const findItem = find(uploadFiles, i => i.id === v.id);
+      if (isNil(findItem)) {
+        setUploadFiles([ v, ...uploadFiles ])
+        return;
+      }
+
+      // update progress
+      const newArr = uploadFiles.map(i => {
+        return i.id === v.id ? v : i;
+      })
+      setUploadFiles(newArr)
+    }
   };
 
   return (
     <DiskContext.Provider value={contextValue}>
       {children}
 
+      <UploadFilePanel />
       {/* TODO 展示正在上传的文件列表 */}
       {/*<div className="fa-disk-info-div">*/}
       {/*  <div className="fa-disk-title-div">*/}
