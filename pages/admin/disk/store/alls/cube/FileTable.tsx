@@ -4,8 +4,8 @@ import { isNil, trim } from "lodash";
 import { Drawer, Dropdown, Space, Table, TableProps, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { FaHref, FaUtils } from "@fa/ui";
-import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { storeFileTagApi } from "@/services";
+import { DownloadOutlined, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { fileSaveApi, storeFileTagApi } from "@/services";
 import { FileIcon } from "@/components";
 import StoreDirModal from "../modal/StoreDirModal";
 import FileSaveDetail from "./FileSaveDetail";
@@ -39,6 +39,10 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
     if (!i.dir) {
       setViewItem(i)
     }
+  }
+
+  function handleDownload(i: Disk.StoreFile) {
+    window.open(fileSaveApi.genLocalGetFile(i.fileId), "_blank")
   }
 
   function handleEdit(i: Disk.StoreFile) {
@@ -126,10 +130,14 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
             key: '1',
             label: (
               <StoreDirModal record={r} dirId={dirId} title="重命名" fetchFinish={onRefresh}>
-                <a>
-                  <div>重命名</div>
-                </a>
+                <FaHref icon={<EditOutlined/>} text="重命名"/>
               </StoreDirModal>
+            ),
+          },
+          {
+            key: '2',
+            label: (
+              <FaHref icon={<DownloadOutlined />} text="下载" onClick={() => handleDownload(r)}/>
             ),
           },
           // {
