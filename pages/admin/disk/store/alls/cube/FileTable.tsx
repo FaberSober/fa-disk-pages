@@ -138,9 +138,10 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
           //   label: '删除',
           // },
         ];
+        const documentType = FaUtils.getDocumentType(r.type); // 判断是office文档
         return (
           <Space>
-            <FaHref onClick={() => handleEdit(r)} icon={<EditOutlined />} text="编辑"/>
+            {documentType && <FaHref onClick={() => handleEdit(r)} icon={<EditOutlined />} text="编辑"/>}
             <Dropdown menu={{items}} trigger={['click']}>
               <FaHref icon={<EllipsisOutlined/>} text="更多"/>
             </Dropdown>
