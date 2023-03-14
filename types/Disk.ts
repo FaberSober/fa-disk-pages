@@ -101,7 +101,7 @@ namespace Disk {
     /** 存储文件ID */
     storeFileId: string;
     /** 版本文件ID */
-    fileSave: string;
+    fileSaveId: string;
     /** 文件名 */
     fileName: string;
     /** 备注 */

@@ -50,7 +50,7 @@ export default function StoreFileHisModal({ children, title, record, fetchFinish
   function getInitialValues() {
     return {
       storeFileId: get(record, 'storeFileId'),
-      fileSave: get(record, 'fileSave'),
+      fileSaveId: get(record, 'fileSaveId'),
       fileName: get(record, 'fileName'),
       remark: get(record, 'remark'),
     }
@@ -82,7 +82,7 @@ export default function StoreFileHisModal({ children, title, record, fetchFinish
           <Form.Item name="storeFileId" label="存储文件ID" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input />
           </Form.Item>
-          <Form.Item name="fileSave" label="版本文件ID" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
+          <Form.Item name="fileSaveId" label="版本文件ID" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input />
           </Form.Item>
           <Form.Item name="fileName" label="文件名" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
