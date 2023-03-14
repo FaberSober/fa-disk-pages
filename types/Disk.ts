@@ -93,6 +93,21 @@ namespace Disk {
     /** 颜色 */
     color: string;
   }
+
+  /** STORE-文件-历史记录 */
+  export interface StoreFileHis extends Fa.BaseDelEntity {
+    /** ID */
+    id: string;
+    /** 存储文件ID */
+    storeFileId: string;
+    /** 版本文件ID */
+    fileSave: string;
+    /** 文件名 */
+    fileName: string;
+    /** 备注 */
+    remark: string;
+  }
+
 }
 
 export default Disk;
