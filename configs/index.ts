@@ -6,6 +6,7 @@ export default {
     /** disk服务 */
     disk: {
       store: '/api/disk/store',
+      doc: '/api/disk/doc',
     },
   },
 } as Fa.ConfigApp

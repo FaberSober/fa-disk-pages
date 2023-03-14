@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Disk } from "@/types";
 import { isNil, trim } from "lodash";
 import { Drawer, Dropdown, Space, Table, TableProps, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { FaHref, FaUtils } from "@fa/ui";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { storeFileTagApi } from "@/services";
 import { FileIcon } from "@/components";
 import StoreDirModal from "../modal/StoreDirModal";
 import FileSaveDetail from "./FileSaveDetail";
+import { MenuLayoutContext } from "@features/fa-admin-pages/layout";
 
 
 export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'columns'> {
@@ -23,6 +24,7 @@ export interface FileTableProps extends Omit<TableProps<Disk.StoreFile>, 'column
  * @date 2022/12/29 14:09
  */
 export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...props }: FileTableProps) {
+  const {addTab} = useContext(MenuLayoutContext)
   const [viewItem, setViewItem] = useState<Disk.StoreFile>();
 
 
@@ -37,6 +39,16 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
     if (!i.dir) {
       setViewItem(i)
     }
+  }
+
+  function handleEdit(i: Disk.StoreFile) {
+    addTab({
+      key: `/admin/disk/doc/edit/${i.id}`,
+      path: `/admin/disk/doc/edit/${i.id}`,
+      name: `编辑-${i.name}`,
+      type: 'inner', // iframe, inner-内部网页
+      closeable: true,
+    })
   }
 
   const columns = [
@@ -128,6 +140,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
         ];
         return (
           <Space>
+            <FaHref onClick={() => handleEdit(r)} icon={<EditOutlined />} text="编辑"/>
             <Dropdown menu={{items}} trigger={['click']}>
               <FaHref icon={<EllipsisOutlined/>} text="更多"/>
             </Dropdown>
@@ -135,7 +148,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
           </Space>
         )
       },
-      width: 80,
+      width: 160,
       fixed: 'right',
     },
   ] as ColumnsType<Disk.StoreFile>
