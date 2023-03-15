@@ -106,6 +106,8 @@ namespace Disk {
     changeFileId: string;
     /** 文件名 */
     fileName: string;
+    /** 版本号 */
+    ver: string;
     /** 备注 */
     remark: string;
   }
