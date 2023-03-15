@@ -6,19 +6,20 @@ import {diskOnlyofficeApi} from "@/services";
 
 export interface DiskOnlyofficeEditorProps {
   storeFileId: string;
+  mode: 'edit'|'view';
 }
 
 /**
  * @author xu.pengfei
  * @date 2023/3/13 19:01
  */
-export default function DiskOnlyofficeEditor({storeFileId}: DiskOnlyofficeEditorProps) {
+export default function DiskOnlyofficeEditor({storeFileId, mode}: DiskOnlyofficeEditorProps) {
 
   const [documentServerUrl, setDocumentServerUrl] = useState<string>()
   const [config, setConfig] = useState<any>()
 
   useEffect(() => {
-    diskOnlyofficeApi.openFile(storeFileId).then(res => {
+    diskOnlyofficeApi.openFile(storeFileId, mode).then(res => {
       setDocumentServerUrl(res.data.documentApi)
       setConfig(res.data.fileModel)
     })

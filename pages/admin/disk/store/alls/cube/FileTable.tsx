@@ -146,7 +146,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
           //   label: '删除',
           // },
         ];
-        const documentType = FaUtils.getDocumentType(r.type); // 判断是office文档
+        const documentType = FaUtils.getDocumentTypeByExt(r.type); // 判断是office文档
         return (
           <Space>
             {documentType && <FaHref onClick={() => handleEdit(r)} icon={<EditOutlined />} text="编辑"/>}
@@ -172,7 +172,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
         {...props}
       />
 
-      <Drawer title="查看文件详情" width={600} open={viewItem != undefined} onClose={() => setViewItem(undefined)}>
+      <Drawer title="查看文件详情" width={800} open={viewItem != undefined} onClose={() => setViewItem(undefined)}>
         {viewItem && <FileSaveDetail id={viewItem.id} />}
       </Drawer>
     </>

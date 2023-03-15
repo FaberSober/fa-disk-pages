@@ -3,6 +3,7 @@ import { Disk } from "@/types";
 import { FaUtils, PageLoading } from "@fa/ui";
 import { fileSaveApi, storeFileApi } from "@/services";
 import { Descriptions, Image, Input, QRCode } from "antd";
+import FileSaveHisTable from "@features/fa-disk-pages/pages/admin/disk/store/alls/cube/FileSaveHisTable";
 
 
 export interface FileSaveDetailProps {
@@ -61,6 +62,9 @@ export default function FileSaveDetail({id}: FileSaveDetailProps) {
       )}
       <Descriptions.Item label="二维码">
         <QRCode value={`f/${data.id}`} />
+      </Descriptions.Item>
+      <Descriptions.Item label="历史版本">
+        <FileSaveHisTable storeFileId={data.id} />
       </Descriptions.Item>
 
     </Descriptions>
