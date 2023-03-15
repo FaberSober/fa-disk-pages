@@ -102,6 +102,8 @@ namespace Disk {
     storeFileId: string;
     /** 版本文件ID */
     fileSaveId: string;
+    /** Office文件变更内容zip包文件ID（适用于onlyoffice） */
+    changeFileId: string;
     /** 文件名 */
     fileName: string;
     /** 备注 */

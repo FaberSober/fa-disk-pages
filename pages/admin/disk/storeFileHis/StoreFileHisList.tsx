@@ -28,6 +28,7 @@ export default function StoreFileHisList() {
       BaseTableUtils.genIdColumn('ID', 'id', 70, sorter),
       BaseTableUtils.genSimpleSorterColumn('存储文件ID', 'storeFileId', 100, sorter),
       BaseTableUtils.genSimpleSorterColumn('版本文件ID', 'fileSaveId', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('Office文件变更内容zip包文件ID（适用于onlyoffice）', 'changeFileId', 100, sorter),
       BaseTableUtils.genSimpleSorterColumn('文件名', 'fileName', 100, sorter),
       BaseTableUtils.genSimpleSorterColumn('备注', 'remark', 100, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),

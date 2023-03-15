@@ -51,6 +51,7 @@ export default function StoreFileHisModal({ children, title, record, fetchFinish
     return {
       storeFileId: get(record, 'storeFileId'),
       fileSaveId: get(record, 'fileSaveId'),
+      changeFileId: get(record, 'changeFileId'),
       fileName: get(record, 'fileName'),
       remark: get(record, 'remark'),
     }
@@ -83,6 +84,9 @@ export default function StoreFileHisModal({ children, title, record, fetchFinish
             <Input />
           </Form.Item>
           <Form.Item name="fileSaveId" label="版本文件ID" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="changeFileId" label="Office文件变更内容zip包文件ID（适用于onlyoffice）" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input />
           </Form.Item>
           <Form.Item name="fileName" label="文件名" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
