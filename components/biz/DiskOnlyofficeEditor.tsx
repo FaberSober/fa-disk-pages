@@ -28,6 +28,33 @@ export default function DiskOnlyofficeEditor({storeFileId}: DiskOnlyofficeEditor
     console.log("Document is loaded", event);
   };
 
+  const onRequestHistory = function (event:any) {
+    console.log("Document is onRequestHistory", event, event.target.DocEditor);
+    // return {
+    //   "currentVersion": 2,
+    //   "history": [
+    //     {
+    //       "created": "2010-07-06 10:13 AM",
+    //       "key": "af86C7e71Ca8",
+    //       "user": {
+    //         "id": "F89d8069ba2b",
+    //         "name": "Kate Cage"
+    //       },
+    //       "version": 1
+    //     },
+    //     {
+    //       "created": "2010-07-07 3:46 PM",
+    //       "key": "Khirz6zTPdfd7",
+    //       "user": {
+    //         "id": "78e1e841",
+    //         "name": "John Smith"
+    //       },
+    //       "version": 2
+    //     },
+    //   ]
+    // }
+  };
+
   if (config === undefined || documentServerUrl === undefined) return <PageLoading />
 
   return (
@@ -57,6 +84,7 @@ export default function DiskOnlyofficeEditor({storeFileId}: DiskOnlyofficeEditor
         //   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkb2N1bWVudCI6eyJmaWxlVHlwZSI6ImRvY3giLCJrZXkiOiJ0ZXN0ZG9jeDAwMDAxIiwidGl0bGUiOiJFeGFtcGxlIERvY3VtZW50IFRpdGxlLmRvY3giLCJ1cmwiOiJodHRwOi8vZmlsZS5xaW5pdS50ZXN0LmR3YXJkLmNuL3RtcC9kb2MvdGVzdC5kb2N4In0sImRvY3VtZW50VHlwZSI6IndvcmQiLCJlZGl0b3JDb25maWciOnsiY2FsbGJhY2tVcmwiOiJodHRwczovL2V4YW1wbGUuY29tL3VybC10by1jYWxsYmFjay5hc2h4IiwibGFuZyI6InpoIiwidXNlciI6eyJpZCI6IjEiLCJuYW1lIjoi546L576O5Li9IiwiZ3JvdXAiOiIifX19.UTBm5TdfZIYGXE4vwuRvRePYHf9fF-3wTux4jXwrHFM",
         // }}
         events_onDocumentReady={onDocumentReady}
+        events_onRequestHistory={onRequestHistory}
       />
     </div>
   )
