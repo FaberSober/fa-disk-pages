@@ -101,7 +101,7 @@ export default function StoreFileRecentList() {
             <Button onClick={() => form.submit()} loading={loading} icon={<SearchOutlined />}>
               查询
             </Button>
-            <Button onClick={() => clearForm(form)} loading={loading}>
+            <Button onClick={() => clearForm(form)}>
               重置
             </Button>
           </Space>
