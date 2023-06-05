@@ -86,7 +86,7 @@ export default function StoreFileRecentList() {
   return (
     <div className="fa-full-content fa-flex-column fa-bg-white">
       <div style={{ display: 'flex', alignItems: 'center', position: 'relative', padding: 8 }}>
-        <strong style={{ fontSize: '18px' }}>{serviceName}</strong>
+        <div className="fa-h3">{serviceName}</div>
         <div className="fa-table-subtitle">
           <span>展示库最近文件列表</span>
         </div>

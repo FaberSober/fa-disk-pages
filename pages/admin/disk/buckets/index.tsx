@@ -60,7 +60,7 @@ export default function StoreBucketList() {
   return (
     <div className="fa-full-content fa-flex-column fa-bg-white">
       <div style={{ display: 'flex', alignItems: 'center', position: 'relative', padding: 8 }}>
-        <strong style={{ fontSize: '18px' }}>{serviceName}</strong>
+        <div className="fa-h3">{serviceName}</div>
         <div className="fa-table-subtitle">
           <span>展示本账户创建的库列表</span>
         </div>
