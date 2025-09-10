@@ -3,8 +3,8 @@ import { get } from 'lodash';
 import { Button, Form, Input } from 'antd';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ApiEffectLayoutContext, CommonModalProps, DragModal, FaHref, FaUtils } from '@fa/ui';
-import { storeBucketApi } from '@/services';
-import { Disk } from '@/types';
+import { storeBucketApi } from '@features/fa-disk-pages/services';
+import { Disk } from '@features/fa-disk-pages/types';
 
 /**
  * STORE-库实体新增、编辑弹框
