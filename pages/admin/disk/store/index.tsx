@@ -40,7 +40,7 @@ export default function index() {
   ]
 
   return (
-    <div className="fa-full-content fa-bg-white fa-flex-row">
+    <div className="fa-full-content-p12 fa-content fa-flex-row">
       <div className="fa-flex-column" style={{width: 140}}>
         <BucketSelBtn/>
         <FaFlexRestLayout>
