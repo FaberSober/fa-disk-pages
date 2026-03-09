@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { FaFlexRestLayout } from "@fa/ui";
-import { FaIcon } from '@fa/icons';
-import { Menu, MenuProps } from "antd";
-import All from './alls'
-import Recent from './recent'
-import Recycle from './recycle'
-import Tags from "./tags";
+import { FaIconPro } from '@/components';
 import { BucketSelBtn } from "@/layout";
+import { FaFlexRestLayout } from "@fa/ui";
+import { Menu, MenuProps } from "antd";
+import { useState } from 'react';
+import All from './alls';
+import Recent from './recent';
+import Recycle from './recycle';
+import Tags from "./tags";
 
 
 /**
@@ -20,22 +20,22 @@ export default function index() {
     {
       label: '全部文件',
       key: 'all',
-      icon: <FaIcon icon="fa-solid fa-box-archive" />,
+      icon: <FaIconPro icon="fa-solid fa-box-archive" />,
     },
     {
       label: '最近文件',
       key: 'recent',
-      icon: <FaIcon icon="fa-solid fa-clock" />,
+      icon: <FaIconPro icon="fa-solid fa-clock" />,
     },
     {
       label: '文件标签',
       key: 'tags',
-      icon: <FaIcon icon="fa-solid fa-tags" />,
+      icon: <FaIconPro icon="fa-solid fa-tags" />,
     },
     {
       label: '回收站',
       key: 'recycle',
-      icon: <FaIcon icon="fa-solid fa-trash-can" />,
+      icon: <FaIconPro icon="fa-solid fa-trash-can" />,
     },
   ]
 
