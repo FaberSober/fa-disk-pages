@@ -1,4 +1,4 @@
-import { FaIconPro } from '@/components';
+import FaIconPro from '@features/fa-admin-pages/components/icons/FaIconPro';
 import { fileSaveApi } from '@/services';
 import { Disk } from '@/types';
 import { FaUtils } from '@fa/ui';

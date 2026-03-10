@@ -1,4 +1,4 @@
-import { FaIconPro } from '@/components';
+import FaIconPro from '@features/fa-admin-pages/components/icons/FaIconPro';
 import { BucketSelBtn } from "@/layout";
 import { FaFlexRestLayout } from "@fa/ui";
 import { Menu, MenuProps } from "antd";
