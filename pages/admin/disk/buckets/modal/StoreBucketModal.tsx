@@ -1,5 +1,5 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { CommonModalProps, DragModal, FaHref, FaUtils, useApiLoading } from '@fa/ui';
+import { CommonModalProps, DragModal, Fa, FaHref, FaUtils, useApiLoading } from '@fa/ui';
 import { storeBucketApi } from '@features/fa-disk-pages/services';
 import { Disk } from '@features/fa-disk-pages/types';
 import { Button, Form, Input } from 'antd';
@@ -32,8 +32,10 @@ export default function StoreBucketModal({
     };
     storeBucketApi.saveOrUpdate(values).then((res) => {
       FaUtils.showResponse(res, '保存文件仓库信息');
-      setOpen(false);
-      if (fetchFinish) fetchFinish();
+      if (res?.status === Fa.RES_CODE.OK) {
+        setOpen(false);
+        fetchFinish?.();
+      }
     });
   }
 

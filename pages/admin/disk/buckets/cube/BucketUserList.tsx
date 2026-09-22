@@ -1,9 +1,9 @@
-import { storeBucketUserApi } from '@/services';
-import { Disk } from '@/types';
 import { PlusOutlined } from '@ant-design/icons';
-import { AuthDelBtn, BizUserSelect, FaEnums, FaUtils, SelectedUser, useApiLoading, useDelete } from '@fa/ui';
+import { AuthDelBtn, BizUserSelect, Fa, FaEnums, FaUtils, SelectedUser, useApiLoading, useDelete } from '@fa/ui';
 import { Button, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
+import { storeBucketUserApi } from '@/services';
+import { Disk } from '@/types';
 
 export interface BucketUserListProps {
   bucketId: number;
@@ -30,13 +30,20 @@ export default function BucketUserList({ bucketId }: BucketUserListProps) {
 
   const [handleDelete] = useDelete<number>(storeBucketUserApi.remove, refreshList, '库人员');
 
-  function handleChangeUsers(users: SelectedUser[], callback: any) {
+  function handleChangeUsers(users: SelectedUser[], callback: () => void, error?: () => void) {
     const params = users.map((i) => ({ userId: i.id, bucketId }));
-    storeBucketUserApi.updateBucketUser(params).then((res) => {
-      FaUtils.showResponse(res, '更新库人员');
-      callback();
-      refreshList();
-    });
+    storeBucketUserApi
+      .updateBucketUser(params)
+      .then((res) => {
+        FaUtils.showResponse(res, '更新库人员');
+        if (res?.status === Fa.RES_CODE.OK) {
+          callback();
+          refreshList();
+        } else {
+          error?.();
+        }
+      })
+      .catch(() => error?.());
   }
 
   const loading = useApiLoading([storeBucketUserApi.getUrl('list')]);
@@ -59,9 +66,7 @@ export default function BucketUserList({ bucketId }: BucketUserListProps) {
           {
             title: '操作',
             dataIndex: 'menu',
-            render: (_, r) => (
-              <Space>{r.type !== FaEnums.StoreBucketUserTypeEnum.CREATOR && <AuthDelBtn handleDelete={() => handleDelete(r.id)} />}</Space>
-            ),
+            render: (_, r) => <Space>{r.type !== FaEnums.StoreBucketUserTypeEnum.CREATOR && <AuthDelBtn handleDelete={() => handleDelete(r.id)} />}</Space>,
             width: 80,
             fixed: 'right',
           },
