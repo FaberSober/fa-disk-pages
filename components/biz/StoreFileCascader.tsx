@@ -22,7 +22,7 @@ export default function StoreFileCascader(props: StoreFileCascaderProps) {
       }}
       rootName="全部文件"
       placeholder="请选择目录"
-      extraParams={bucket}
+      extraParams={[bucket]}
       {...props}
     />
   );

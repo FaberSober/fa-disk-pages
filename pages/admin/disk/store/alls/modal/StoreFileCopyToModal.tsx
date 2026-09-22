@@ -1,7 +1,7 @@
 import { StoreFileCascader } from '@/components';
 import { storeFileApi } from '@/services';
 import { Disk } from '@/types';
-import { CommonModalProps, DragModal, FaUtils, useApiLoading } from '@fa/ui';
+import { CommonModalProps, DragModal, Fa, FaUtils, useApiLoading } from '@fa/ui';
 import { Button, Form } from 'antd';
 import { useState } from 'react';
 
@@ -31,8 +31,10 @@ export default function StoreFileCopyToModal({
   function onFinish(fieldsValue: any) {
     storeFileApi.copyToDir(fileIds, fieldsValue.toDirId).then((res) => {
       FaUtils.showResponse(res, '复制到目录');
-      setOpen(false);
-      if (fetchFinish) fetchFinish();
+      if (res?.status === Fa.RES_CODE.OK) {
+        setOpen(false);
+        fetchFinish?.();
+      }
     });
   }
 
