@@ -6,7 +6,7 @@ import { Item, ItemParams, Menu, useContextMenu } from 'react-contexify';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { isNil } from 'lodash';
 import { storeFileApi } from '@/services';
-import { FaUtils } from "@fa/ui";
+import { Fa, FaUtils } from "@fa/ui";
 import { FileIcon } from '@/components';
 import StoreDirModal from '../modal/StoreDirModal';
 
@@ -64,8 +64,10 @@ export default function FileGrid({ dirId, files, selectedRowKeys, onSelectedChan
       onOk: async (close) => {
         storeFileApi.removeBatchByIds(selectedRowKeys).then((res) => {
           FaUtils.showResponse(res, '删除');
-          onRefresh();
-          close();
+          if (res?.status === Fa.RES_CODE.OK) {
+            onRefresh();
+            close();
+          }
         });
       },
     });

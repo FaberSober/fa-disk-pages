@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, Fa, FaUtils, useDelete, useTableQueryParams } from '@fa/ui';
 import { trim } from 'lodash';
 import { Disk } from '@/types';
 import { storeFileApi as api } from '@/services';
@@ -49,8 +49,10 @@ export default function StoreFileRecycleList() {
       onOk: (close) => {
         api.putBack(ids).then((res) => {
           FaUtils.showResponse(res, '恢复文件到原处');
-          close();
-          fetchPageList();
+          if (res?.status === Fa.RES_CODE.OK) {
+            close();
+            fetchPageList();
+          }
         });
       },
     });

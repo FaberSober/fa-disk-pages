@@ -91,8 +91,10 @@ export default function index() {
       onOk: async (close) => {
         storeFileApi.removeBatchByIds(selectedRowKeys).then((res) => {
           FaUtils.showResponse(res, '批量删除');
-          refreshDir();
-          close();
+          if (res?.status === Fa.RES_CODE.OK) {
+            refreshDir();
+            close();
+          }
         });
       },
     });
