@@ -21,7 +21,7 @@ namespace Disk {
     /** ID */
     id: number;
     /** 库ID */
-    bucketId: string;
+    bucketId: number;
     /** 用户ID */
     userId: string;
     /** 类型1-创建者/2-操作者 */
@@ -45,11 +45,11 @@ namespace Disk {
     /** ID */
     id: number;
     /** 库ID */
-    bucket: string;
+    bucketId: number;
     /** 文件夹名称 */
     name: string;
     /** 父级节点 */
-    parentId: string;
+    parentId: number;
     /** 是否文件夹 */
     dir: boolean;
     /** 文件类型 */
@@ -68,6 +68,19 @@ namespace Disk {
     deleteAction: boolean;
   }
 
+  export interface StoreFileQuery {
+    bucketId?: number;
+    parentId?: number;
+    name?: string;
+    type?: string;
+    dir?: boolean;
+    deleteAction?: boolean;
+    recursive?: boolean;
+    fullPath?: string;
+    tagQueryType?: string | number;
+    tagIds?: number[];
+  }
+
   /** STORE-文件-标签 */
   export interface StoreFileTag extends Fa.BaseDelEntity {
     /** ID */
@@ -83,7 +96,7 @@ namespace Disk {
     /** ID */
     id: number;
     /** 库ID */
-    bucket: string;
+    bucketId: number;
     /** 父ID */
     parentId: number;
     /** 名称 */
@@ -97,9 +110,9 @@ namespace Disk {
   /** STORE-文件-历史记录 */
   export interface StoreFileHis extends Fa.BaseDelEntity {
     /** ID */
-    id: string;
+    id: number;
     /** 存储文件ID */
-    storeFileId: string;
+    storeFileId: number;
     /** 版本文件ID */
     fileSaveId: string;
     /** Office文件变更内容zip包文件ID（适用于onlyoffice） */
@@ -107,11 +120,10 @@ namespace Disk {
     /** 文件名 */
     fileName: string;
     /** 版本号 */
-    ver: string;
+    ver: number;
     /** 备注 */
     remark: string;
   }
-
 }
 
 export default Disk;
