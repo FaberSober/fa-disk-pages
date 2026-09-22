@@ -4,7 +4,7 @@ import { storeFileApi } from '@/services';
 import { Disk } from '@/types';
 import { DownloadOutlined } from '@ant-design/icons';
 import { BaseTableUtils, Fa, FaUtils, useApiLoading } from '@fa/ui';
-import { Button, Checkbox, Input, Modal, Select, Space, TreeSelect } from 'antd';
+import { Button, Checkbox, Input, Modal, Pagination, Select, Space, TreeSelect } from 'antd';
 import { isNil, trim } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from 'react-use';
@@ -30,6 +30,7 @@ export default function index() {
   const [tagQueryType, setTagQueryType] = useState<number>(1); // 标签搜索-类型：1-同时满足，2-满足其一
   const [tagIds, setTagIds] = useState<number[]>([]); // 标签搜索-选中标签
   const [sorter, setSorter] = useState<Fa.Sorter>({ field: 'name', order: 'ascend' }); // 排序-字段
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 20, total: 0 });
 
   useEffect(() => {
     if (dirId !== Fa.Constant.TREE_SUPER_ROOT_ID) {
@@ -44,14 +45,15 @@ export default function index() {
   }, [bucket]);
 
   useEffect(() => {
-    refreshDir();
-  }, [dirId, tagQueryType, tagIds, sorter]);
+    refreshDir(1);
+  }, [dirId, tagQueryType, tagIds, sorter, recursive]);
 
-  async function refreshDir() {
+  async function refreshDir(current = 1, pageSize = pagination.pageSize) {
     setSelectedRowKeys([]);
-    // setSearch('')
 
-    const params = {
+    const params: Fa.BasePageQuery<Disk.StoreFileQuery> = {
+      current,
+      pageSize,
       query: {
         bucketId: bucket.id,
         parentId: dirId,
@@ -60,17 +62,24 @@ export default function index() {
         fullPath: '',
         name: '',
       },
-      sorter: `dir DESC, ${BaseTableUtils.getSorter(sorter)}`,
+      sorter: `dir DESC, ${BaseTableUtils.getSorter(sorter) || 'name ASC'}, id ASC`,
     };
     if (trim(search) !== '' || tagIds.length > 0) {
-      const ret = await storeFileApi.treePathLine(dirId);
-      const fullPathList = ret.data;
-      params.query.fullPath = recursive ? ['#全部文件#', ...fullPathList.map((i) => `#${i.name}#`)].join(',') : '';
+      if (recursive) {
+        const ret = await storeFileApi.treePathLine(dirId);
+        const fullPathList = ret.data;
+        params.query.fullPath = ['#全部文件#', ...fullPathList.map((i) => `#${i.name}#`)].join(',');
+        params.query.parentId = undefined;
+      }
       params.query.name = trim(search);
-      params.query.parentId = undefined!;
     }
-    storeFileApi.queryFile(params).then((res) => {
-      setArray(res.data);
+    storeFileApi.queryFilePage(params).then((res) => {
+      setArray(res.data.rows);
+      setPagination({
+        current: Number(res.data.pagination.current),
+        pageSize: Number(res.data.pagination.pageSize),
+        total: Number(res.data.pagination.total),
+      });
     });
   }
 
@@ -100,7 +109,7 @@ export default function index() {
     });
   }
 
-  const loadingDir = useApiLoading([storeFileApi.getUrl('queryFile')]);
+  const loadingDir = useApiLoading([storeFileApi.getUrl('queryFilePage')]);
   const loadingDownloadZip = useApiLoading([storeFileApi.getUrl('downloadZip')]);
   const loadingRemoveBatchByIds = useApiLoading([storeFileApi.getUrl('removeBatchByIds')]);
   return (
@@ -121,7 +130,7 @@ export default function index() {
               style={{ flex: 1 }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onSearch={refreshDir}
+              onSearch={() => refreshDir(1)}
               placeholder="请输入名称"
             />
           </Input.Group>
@@ -214,6 +223,7 @@ export default function index() {
             dirId={dirId}
             files={array}
             selectedRowKeys={selectedRowKeys}
+            total={pagination.total}
             onSelectedChange={(v) => setSelectedRowKeys(v)}
             showHeader={selectedRowKeys.length === 0}
             onRefresh={refreshDir}
@@ -221,6 +231,17 @@ export default function index() {
           />
         )}
       </div>
+      <Pagination
+        current={pagination.current}
+        pageSize={pagination.pageSize}
+        total={pagination.total}
+        showSizeChanger
+        showQuickJumper
+        showTotal={(total) => `共 ${total} 个条目`}
+        pageSizeOptions={['10', '20', '50', '100']}
+        onChange={(current, pageSize) => refreshDir(current, pageSize)}
+        style={{ padding: '8px', textAlign: 'right' }}
+      />
     </div>
   );
 }

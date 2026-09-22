@@ -14,6 +14,7 @@ import StoreDirModal from '../modal/StoreDirModal';
 export interface FileGridProps {
   dirId: number;
   files: Disk.StoreFile[];
+  total?: number;
   selectedRowKeys: number[]; // 选中的ids
   onSelectedChange: (rowKeys: number[]) => void;
   showHeader: boolean;
@@ -26,7 +27,7 @@ const MENU_ID = 'file-grid-menu';
  * @author xu.pengfei
  * @date 2022/12/29 14:22
  */
-export default function FileGrid({ dirId, files, selectedRowKeys, onSelectedChange, showHeader, onRefresh, onIntoDir }: FileGridProps) {
+export default function FileGrid({ dirId, files, total, selectedRowKeys, onSelectedChange, showHeader, onRefresh, onIntoDir }: FileGridProps) {
   const [isPressed1] = useKeyboardJs('win');
   const [isPressed2] = useKeyboardJs('shift');
 
@@ -104,7 +105,7 @@ export default function FileGrid({ dirId, files, selectedRowKeys, onSelectedChan
             style={{ marginLeft: 8 }}
           >
             <div style={{ marginLeft: 6 }}>
-              共<a>{files.length}</a>个条目
+              共<a>{total ?? files.length}</a>个条目
             </div>
           </Checkbox>
         </div>
