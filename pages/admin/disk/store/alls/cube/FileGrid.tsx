@@ -140,7 +140,7 @@ export default function FileGrid({ dirId, files, total, selectedRowKeys, onSelec
           </Item>
         )}
         <Item id="del" onClick={handleItemClick}>
-          <span style={{ color: '#F00' }}>
+          <span style={{ color: 'var(--ant-color-error, #ff4d4f)' }}>
             <DeleteOutlined style={{ width: 16 }} /> 删除
           </span>
         </Item>

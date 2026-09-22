@@ -65,7 +65,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
           <div className="fa-flex-row-center">
             <a
               className="fa-flex-row-center"
-              style={{color: '#333'}}
+              style={{color: 'var(--fa-text-color)'}}
               onClick={() => {
                 if (r.dir) {
                   onIntoDir(r.id)
@@ -75,7 +75,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
               <FileIcon file={r} width={30} style={{marginRight: 6}} />
               <div className="fa-disk-list-item-name" onClick={() => handleViewFile(r)}>
                 <div>{r.name}</div>
-                {showPath && <div style={{fontSize: '6px', color: '#999'}}>{trim(r.fullPath).split(",").map(i => i.replaceAll('#', '')).join('/')}</div>}
+                {showPath && <div style={{fontSize: '6px', color: 'var(--fa-text-color-light100)'}}>{trim(r.fullPath).split(",").map(i => i.replaceAll('#', '')).join('/')}</div>}
               </div>
             </a>
           </div>

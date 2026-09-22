@@ -43,7 +43,7 @@ export default function UploadFilePanel() {
                     width={20}
                   />
                 </Space>
-                <div className="fa-subtitle" style={{ color: i.status === 'error' ? '#ff4d4f' : undefined }}>
+                <div className="fa-subtitle" style={{ color: i.status === 'error' ? 'var(--ant-color-error, #ff4d4f)' : undefined }}>
                   {i.status === 'success' ? '上传完成' : i.status === 'error' ? i.error || '上传失败' : '上传中'}
                 </div>
               </div>

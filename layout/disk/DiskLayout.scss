@@ -6,7 +6,7 @@
   border-radius: var(--fa-border-radius);
   border: 1px solid var(--fa-border-color);
   box-shadow: var(--fa-box-shadow);
-  background-color: #fff;
+  background-color: var(--fa-bg-color);
 }
 
 .fa-disk-title-div {
@@ -36,10 +36,10 @@
 
 .fa-disk-bucket-item {
   width: 200px;
-  background-color: #fff;
+  background-color: var(--fa-bg-color);
   padding: 6px;
   cursor: pointer;
-  color: #000;
+  color: var(--fa-text-color);
 }
 .fa-disk-bucket-item:hover {
   background-color: var(--fa-hover-bg);

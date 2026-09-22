@@ -46,11 +46,11 @@ export default function StoreFileRecentList() {
         ...BaseTableUtils.genSimpleSorterColumn('名称', 'name', undefined, sorter),
         render: (_val, r) => (
           <div className="fa-flex-row-center">
-            <a className="fa-flex-row-center" style={{ color: '#333' }}>
+            <a className="fa-flex-row-center" style={{ color: 'var(--fa-text-color)' }}>
               <FileIcon file={r} width={30} style={{ marginRight: 6 }} />
               <div>
                 <div>{r.name}</div>
-                <div style={{ fontSize: '6px', color: '#999' }}>
+                <div style={{ fontSize: '6px', color: 'var(--fa-text-color-light100)' }}>
                   {trim(r.fullPath)
                     .split(',')
                     .map((i) => i.replaceAll('#', ''))

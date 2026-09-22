@@ -37,13 +37,13 @@
 
 .fa-disk-grid-item-name-selected {
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--fa-text-color-highlight);
   padding: 0 4px;
 }
 
 .fa-disk-list-item-name {
   cursor: pointer;
-  color: #333;
+  color: var(--fa-text-color);
 }
 
 .fa-disk-list-item-name:hover {

@@ -21,7 +21,7 @@ export default function StoreTagCascader(props: StoreTagCascaderProps) {
         allTree: () => storeTagApi.getTree({ query: { bucketId: bucket.id } })
       }}
       placeholder="请选择标签"
-      extraParams={bucket}
+      extraParams={[bucket.id]}
       {...props}
     />
   );
