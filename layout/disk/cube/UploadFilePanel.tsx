@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
 import DiskContext from "@features/fa-disk-pages/layout/disk/context/DiskContext";
 import './UploadFilePanel.scss';
@@ -36,8 +36,16 @@ export default function UploadFilePanel() {
                   <div>{FaUtils.sizeToHuman(i.loaded)}</div>
                   <div>/</div>
                   <div>{FaUtils.sizeToHuman(i.total)}</div>
-                  <Progress type="circle" percent={FaUtils.tryToFixed(i.progress * 100, 0)} width={20} />
+                  <Progress
+                    type="circle"
+                    percent={FaUtils.tryToFixed(i.progress * 100, 0)}
+                    status={i.status === 'uploading' ? 'active' : i.status === 'error' ? 'exception' : 'success'}
+                    width={20}
+                  />
                 </Space>
+                <div className="fa-subtitle" style={{ color: i.status === 'error' ? '#ff4d4f' : undefined }}>
+                  {i.status === 'success' ? '上传完成' : i.status === 'error' ? i.error || '上传失败' : '上传中'}
+                </div>
               </div>
             )
           })}

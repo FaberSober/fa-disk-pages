@@ -9,6 +9,7 @@ export interface UploadFileProps {
   progress: number;
   rate: number;
   status: 'uploading' | 'success' | 'error';
+  error?: string;
 }
 
 export interface DiskContextProps {

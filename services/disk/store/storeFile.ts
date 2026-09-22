@@ -7,6 +7,15 @@ class Api extends BaseTreeApi<Disk.StoreFile, number> {
   /** 批量下载 */
   downloadZip = (ids: number[]): Promise<undefined> => this.download('downloadZip', ids);
 
+  /** 上传文件并创建网盘文件记录 */
+  upload = (file: File, bucketId: number, parentId: number, callback?: (progressEvent: any) => void): Promise<Fa.Ret<Disk.StoreFile>> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('bucketId', `${bucketId}`);
+    formData.append('parentId', `${parentId}`);
+    return this.postForm<Disk.StoreFile>('upload', formData, { timeout: -1, onUploadProgress: callback });
+  };
+
   /** 移动到 */
   moveToDir = (fileIds: number[], toDirId: number): Promise<Fa.Ret<boolean>> => this.post('moveToDir', { fileIds, toDirId });
 

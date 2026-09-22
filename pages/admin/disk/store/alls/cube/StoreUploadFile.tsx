@@ -1,13 +1,11 @@
-import React, { useContext, useRef } from 'react';
-import { FaUtils } from "@fa/ui";
-import { fileSaveApi, storeFileApi } from "@/services";
-import { DiskContext } from "@/layout";
-import { Button } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from '@ant-design/icons';
+import { Fa, FaUtils } from '@fa/ui';
+import { UploadFileProps } from '@features/fa-disk-pages/layout/disk/context/DiskContext';
+import { Button } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import { UploadFileProps } from "@features/fa-disk-pages/layout/disk/context/DiskContext";
-import { isNil } from "lodash";
-
+import { useContext, useRef } from 'react';
+import { DiskContext } from '@/layout';
+import { storeFileApi } from '@/services';
 
 export interface StoreUploadFileProps {
   dirId: number;
@@ -18,81 +16,68 @@ export interface StoreUploadFileProps {
  * @author xu.pengfei
  * @date 2022/12/26 14:21
  */
-export default function StoreUploadFile({dirId, onSuccess}: StoreUploadFileProps) {
+export default function StoreUploadFile({ dirId, onSuccess }: StoreUploadFileProps) {
   const inputRef = useRef<any>(null);
 
   const { bucket, fireUploadFile } = useContext(DiskContext);
 
   function handleInputFileChange(e: any) {
-    const files = [];
-    for (let i = 0; i < e.target.files.length; i+=1) {
-      files.push(e.target.files[i])
+    const files = Array.from(e.target.files || []) as File[];
+    e.target.value = '';
+    void uploadFiles(files);
+  }
+
+  async function uploadFiles(files: File[]) {
+    if (files.length === 0) return;
+
+    let uploaded = false;
+    for (const file of files) {
+      uploaded = (await uploadOneFile(file)) || uploaded;
     }
-    uploadFiles(files)
+    if (uploaded) onSuccess?.();
   }
 
-  function uploadFiles(files:any[]) {
-    if (isNil(files) || files.length === 0) return;
-
-    uploadOneFile(files[0], () => {
-      files.shift()
-      setTimeout(() => {
-        uploadFiles(files)
-      }, 10)
-    })
-  }
-
-  function uploadOneFile(file:any, onFinish: () => void) {
+  async function uploadOneFile(file: File) {
     const id = uuidv4();
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      // 走自己服务器上传，会占据自己服务器带宽
-      fileSaveApi
-        .uploadFile(file, (pe) => {
-          // console.log('progressEvent', pe);
-          const fileInfo:UploadFileProps = {
-            id,
-            fileName: file.name,
-            total: pe.total,
-            loaded: pe.loaded || 0,
-            progress: pe.progress || 0,
-            rate: pe.rate || 0,
-            status: pe.progress === 1 ? 'success' : 'uploading',
-          }
-          console.log('fileInfo', fileInfo)
-          fireUploadFile(fileInfo)
-        })
-        .then((res) => {
-          // save file
-          const params = {
-            bucketId: bucket.id,
-            parentId: dirId,
-            fileId: res.data.id,
-            dir: false,
-            tags: [],
-          }
-          storeFileApi.save(params).then((res) => {
-            FaUtils.showResponse(res, '上传文件');
-            if (onSuccess) onSuccess();
-            if (onFinish) onFinish();
-          });
+    let loaded = 0;
+    let progress = 0;
+    let rate = 0;
+    const update = (status: UploadFileProps['status'], error?: string, fileName = file.name) => {
+      fireUploadFile({ id, fileName, total: file.size, loaded, progress, rate, status, error });
+    };
 
-          // TODO update progress to layout
-          // cb(res.data.localUrl, { title: file.name });
-        });
-    });
-    reader.readAsDataURL(file);
+    update('uploading');
+    try {
+      const res = await storeFileApi.upload(file, bucket.id, dirId, (pe) => {
+        loaded = pe.loaded || loaded;
+        progress = pe.progress || (pe.total ? loaded / pe.total : progress);
+        rate = pe.rate || rate;
+        update('uploading');
+      });
+      if (res.status !== Fa.RES_CODE.OK || !res.data) {
+        FaUtils.showResponse(res, '上传文件');
+        throw new Error(res.message || '上传文件失败');
+      }
+      loaded = file.size;
+      progress = 1;
+      update('success', undefined, res.data.name || file.name);
+      FaUtils.showResponse(res, '上传文件');
+      return true;
+    } catch (e: any) {
+      update('error', e?.response?.data?.message || e?.message || '上传文件失败');
+      return false;
+    }
   }
 
   function triggerClick() {
     if (inputRef.current) {
-      inputRef.current.click()
+      inputRef.current.click();
     }
   }
 
   return (
     <div>
-      <input ref={inputRef} multiple type="file" onChange={handleInputFileChange} style={{display: 'none'}} />
+      <input ref={inputRef} multiple type="file" onChange={handleInputFileChange} style={{ display: 'none' }} />
       <Button type="primary" icon={<UploadOutlined />} onClick={triggerClick}>上传文件</Button>
     </div>
   )
