@@ -1,7 +1,7 @@
 import { DiskContext } from '@/layout';
 import { storeFileApi, storeTagApi } from '@/services';
 import { Disk } from '@/types';
-import { CommonModalProps, DragModal, FaUtils, TreeTransfer, useApiLoading } from '@fa/ui';
+import { CommonModalProps, DragModal, Fa, FaUtils, TreeTransfer, useApiLoading } from '@fa/ui';
 import { Button } from 'antd';
 import { useContext, useState } from 'react';
 
@@ -33,8 +33,10 @@ export default function StoreFileTagsModal({
   function handleSubmit() {
     storeFileApi.addTags(fileIds, tagIds).then((res) => {
       FaUtils.showResponse(res, '打标签');
-      setOpen(false);
-      if (fetchFinish) fetchFinish();
+      if (res?.status === Fa.RES_CODE.OK) {
+        setOpen(false);
+        fetchFinish?.();
+      }
     });
   }
 
@@ -46,7 +48,7 @@ export default function StoreFileTagsModal({
     setTagIds(keys);
   };
 
-  const loading = useApiLoading([storeFileApi.getUrl('copyToDir')]);
+  const loading = useApiLoading([storeFileApi.getUrl('addTags')]);
   return (
     <span>
       <span onClick={showModal}>{children || <Button>打标签</Button>}</span>
