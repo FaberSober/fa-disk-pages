@@ -4,7 +4,6 @@ import { Checkbox, Modal } from 'antd';
 import useKeyboardJs from 'react-use/lib/useKeyboardJs';
 import { Item, ItemParams, Menu, useContextMenu } from 'react-contexify';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { isNil } from 'lodash';
 import { storeFileApi } from '@/services';
 import { Fa, FaUtils } from "@fa/ui";
 import { FileIcon } from '@/components';
@@ -54,16 +53,16 @@ export default function FileGrid({ dirId, files, total, selectedRowKeys, onSelec
     }
   }
 
-  function handleBatchDelete() {
-    if (isNil(selectedRowKeys) || selectedRowKeys.length === 0) return;
+  function handleDelete(fileIds: number[]) {
+    if (fileIds.length === 0) return;
 
     Modal.confirm({
       title: '删除',
-      content: `确认删除勾选中的 ${selectedRowKeys.length} 条数据？`,
+      content: fileIds.length === 1 ? '确认删除该条数据？' : `确认删除勾选中的 ${fileIds.length} 条数据？`,
       okText: '删除',
       okType: 'danger',
       onOk: async (close) => {
-        storeFileApi.removeBatchByIds(selectedRowKeys).then((res) => {
+        storeFileApi.removeBatchByIds(fileIds).then((res) => {
           FaUtils.showResponse(res, '删除');
           if (res?.status === Fa.RES_CODE.OK) {
             onRefresh();
@@ -90,7 +89,7 @@ export default function FileGrid({ dirId, files, total, selectedRowKeys, onSelec
         setOpen(true);
         break;
       case 'del':
-        handleBatchDelete();
+        handleDelete(selectedRowKeys.includes(item.id) ? selectedRowKeys : [item.id]);
         break;
     }
   };
