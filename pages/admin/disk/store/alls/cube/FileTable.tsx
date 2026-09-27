@@ -3,7 +3,7 @@ import { Disk } from "@/types";
 import { isNil, trim } from "lodash";
 import { Drawer, Dropdown, Space, Table, TableProps, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { FaHref, FaUtils } from "@fa/ui";
+import { Fa, FaHref, FaUtils } from "@fa/ui";
 import { DownloadOutlined, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { fileSaveApi, storeFileTagApi } from "@/services";
 import { FileIcon } from "@/components";
@@ -28,10 +28,11 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
   const [viewItem, setViewItem] = useState<Disk.StoreFile>();
 
 
-  function handleRemoveTagLink(linkId: number) {
+  function handleRemoveTagLink(linkId: number, event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault();
     storeFileTagApi.remove(linkId).then(res => {
       FaUtils.showResponse(res, '删除标签')
-      onRefresh()
+      if (res?.status === Fa.RES_CODE.OK) onRefresh()
     })
   }
 
@@ -95,7 +96,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
                 key={i.id}
                 color={i.color}
                 closable
-                onClose={() => handleRemoveTagLink(i.id)}
+                onClose={(event) => handleRemoveTagLink(i.id, event)}
               >{i.name}</Tag>
             ))}
           </div>
