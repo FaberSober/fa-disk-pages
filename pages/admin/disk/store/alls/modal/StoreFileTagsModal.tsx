@@ -41,6 +41,7 @@ export default function StoreFileTagsModal({
   }
 
   function showModal() {
+    setTagIds([]);
     setOpen(true);
     if (onOpen) onOpen();
   }
