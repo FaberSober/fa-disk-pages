@@ -173,7 +173,7 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
         {...props}
       />
 
-      <Drawer title="查看文件详情" width={800} open={viewItem != undefined} onClose={() => setViewItem(undefined)}>
+      <Drawer title="查看文件详情" size={800} open={viewItem != undefined} onClose={() => setViewItem(undefined)}>
         {viewItem && <FileSaveDetail id={viewItem.id} />}
       </Drawer>
     </>
