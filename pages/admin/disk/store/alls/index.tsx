@@ -6,7 +6,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { BaseTableUtils, Fa, FaUtils, useApiLoading } from '@fa/ui';
 import { Button, Checkbox, Input, Modal, Pagination, Select, Space, TreeSelect } from 'antd';
 import { isNil, trim } from 'lodash';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import { FileGrid, FileTable, StoreDirPath, StoreUploadFile, ViewTypeToggle } from './cube';
 import './index.scss';
@@ -31,6 +31,7 @@ export default function index() {
   const [tagIds, setTagIds] = useState<number[]>([]); // 标签搜索-选中标签
   const [sorter, setSorter] = useState<Fa.Sorter>({ field: 'name', order: 'ascend' }); // 排序-字段
   const [pagination, setPagination] = useState({ current: 1, pageSize: 20, total: 0 });
+  const requestIdRef = useRef(0);
 
   useEffect(() => {
     if (dirId !== Fa.Constant.TREE_SUPER_ROOT_ID) {
@@ -48,7 +49,12 @@ export default function index() {
     refreshDir(1);
   }, [dirId, tagQueryType, tagIds, sorter, recursive]);
 
+  useEffect(() => () => {
+    requestIdRef.current += 1;
+  }, []);
+
   async function refreshDir(current = 1, pageSize = pagination.pageSize) {
+    const requestId = ++requestIdRef.current;
     setSelectedRowKeys([]);
 
     const params: Fa.BasePageQuery<Disk.StoreFileQuery> = {
@@ -67,19 +73,20 @@ export default function index() {
     if (trim(search) !== '' || tagIds.length > 0) {
       if (recursive) {
         const ret = await storeFileApi.treePathLine(dirId);
+        if (requestId !== requestIdRef.current) return;
         const fullPathList = ret.data;
         params.query.fullPath = ['#全部文件#', ...fullPathList.map((i) => `#${i.name}#`)].join(',');
         params.query.parentId = undefined;
       }
       params.query.name = trim(search);
     }
-    storeFileApi.queryFilePage(params).then((res) => {
-      setArray(res.data.rows);
-      setPagination({
-        current: Number(res.data.pagination.current),
-        pageSize: Number(res.data.pagination.pageSize),
-        total: Number(res.data.pagination.total),
-      });
+    const res = await storeFileApi.queryFilePage(params);
+    if (requestId !== requestIdRef.current) return;
+    setArray(res.data.rows);
+    setPagination({
+      current: Number(res.data.pagination.current),
+      pageSize: Number(res.data.pagination.pageSize),
+      total: Number(res.data.pagination.total),
     });
   }
 
