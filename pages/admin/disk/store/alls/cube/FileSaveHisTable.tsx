@@ -20,8 +20,15 @@ export default function FileSaveHisTable({storeFileId}: FileSaveHisTableProps) {
   const [array, setArray] = useState<Disk.StoreFileHis[]>([])
 
   useEffect(() => {
-    storeFileHisApi.list({query: {storeFileId}, sorter: "id DESC"}).then(res => setArray(res.data))
-  }, [])
+    let active = true;
+    setArray([]);
+    storeFileHisApi.list({query: {storeFileId}, sorter: "id DESC"}).then(res => {
+      if (active) setArray(res.data);
+    });
+    return () => {
+      active = false;
+    };
+  }, [storeFileId])
 
   function handleView(i: Disk.StoreFileHis) {
     addTab({
