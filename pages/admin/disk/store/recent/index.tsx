@@ -29,7 +29,11 @@ export default function StoreFileRecentList() {
     loading,
     list,
     paginationProps,
-  } = useTableQueryParams<Disk.StoreFile>(api.queryFilePage, { extraParams: { dir: false, bucketId: bucket.id } }, serviceName);
+  } = useTableQueryParams<Disk.StoreFile>(
+    api.queryFilePage,
+    { extraParams: { dir: false, bucketId: bucket.id }, sorter: { field: 'updTime', order: 'descend' } },
+    serviceName,
+  );
 
   useEffect(() => {
     setExtraParams({ dir: false, bucketId: bucket.id });
