@@ -9,11 +9,11 @@ import { DiskContext } from '@/layout';
 import { FileIcon } from '@/components';
 import StoreFilePutBackToModal from "@features/fa-disk-pages/pages/admin/disk/store/recycle/modal/StoreFilePutBackToModal";
 
-const serviceName = '最近文件';
-const biz = 'disk_store_file_recent';
+const serviceName = '回收站';
+const biz = 'disk_store_file_recycle';
 
 /**
- * STORE-库最近文件
+ * STORE-库回收站
  */
 export default function StoreFileRecycleList() {
   const { bucket } = useContext(DiskContext);
