@@ -4,6 +4,9 @@ import { Disk } from '@/types';
 
 /** ------------------------------------------ xx 操作接口 ------------------------------------------ */
 class Api extends BaseTreeApi<Disk.StoreFile, number> {
+  /** 根据已授权的网盘文件记录创建短时访问资源 */
+  createAccessResource = (storeFileId: number): Promise<Fa.Ret<{ previewUrl: string; downloadUrl: string }>> => this.post(`accessResource/${storeFileId}`, {});
+
   /** 批量下载 */
   downloadZip = (ids: number[]): Promise<undefined> => this.download('downloadZip', ids);
 

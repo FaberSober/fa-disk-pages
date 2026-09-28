@@ -31,7 +31,7 @@ export default function UploadDiskFile({ children, description, onChange, value,
       .then((res) => {
         setLoading(false);
         const fileData = res.data;
-        setArray([{ uid: fileData.id, size: fileData.size, name: fileData.originalFilename, url: fileSaveApi.genLocalGetFile(fileData.id) }]);
+        setArray([{ uid: fileData.id, size: fileData.size, name: fileData.originalFilename }]);
       })
       .catch(() => setLoading(false));
   }, [value]);

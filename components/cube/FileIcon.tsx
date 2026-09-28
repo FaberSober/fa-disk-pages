@@ -1,8 +1,8 @@
-import FaIconPro from '@features/fa-admin-pages/components/icons/FaIconPro';
-import { fileSaveApi } from '@/services';
-import { Disk } from '@/types';
 import { FaUtils } from '@fa/ui';
-import { CSSProperties } from 'react';
+import FaIconPro from '@features/fa-admin-pages/components/icons/FaIconPro';
+import { CSSProperties, useEffect, useState } from 'react';
+import { storeFileApi } from '@/services';
+import { Disk } from '@/types';
 
 export interface FileIconProps {
   file: Disk.StoreFile;
@@ -15,6 +15,25 @@ export interface FileIconProps {
  * @date 2022/12/29 13:58
  */
 export default function FileIcon({ file, width = 20, style }: FileIconProps) {
+  const [preview, setPreview] = useState<{ id: number; url: string }>();
+  const previewUrl = preview?.id === file.id ? preview.url : undefined;
+  const isImg = !file.dir && FaUtils.isImg(file.type);
+
+  useEffect(() => {
+    let active = true;
+    if (isImg) {
+      storeFileApi
+        .createAccessResource(file.id)
+        .then((res) => {
+          if (active && res.data?.previewUrl) setPreview({ id: file.id, url: res.data.previewUrl });
+        })
+        .catch(() => undefined);
+    }
+    return () => {
+      active = false;
+    };
+  }, [file.id, isImg]);
+
   const divStyle = {
     width,
     height: width,
@@ -24,23 +43,22 @@ export default function FileIcon({ file, width = 20, style }: FileIconProps) {
   if (file.dir) {
     return (
       <div style={divStyle}>
-        <FaIconPro icon='fa-solid fa-folder' style={{ width, height: width }} />
+        <FaIconPro icon="fa-solid fa-folder" style={{ width, height: width }} />
       </div>
     );
   }
 
-  const isImg = FaUtils.isImg(file.type);
-  if (isImg) {
+  if (isImg && previewUrl) {
     return (
       <div className="fa-flex-row fa-flex-center" style={divStyle}>
-        <img src={fileSaveApi.genLocalGetFilePreview(file.fileId)} style={{ maxWidth: width, maxHeight: width }} alt={file.name} />
+        <img src={previewUrl} style={{ maxWidth: width, maxHeight: width }} alt={file.name} />
       </div>
     );
   }
 
   return (
     <div style={divStyle}>
-      <FaIconPro icon='fa-solid fa-file-lines' style={{ width, height: width }} />
+      <FaIconPro icon="fa-solid fa-file-lines" style={{ width, height: width }} />
     </div>
   );
 }

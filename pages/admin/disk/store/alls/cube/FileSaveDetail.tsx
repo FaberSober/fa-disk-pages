@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Disk } from "@/types";
 import { FaUtils, PageLoading } from "@fa/ui";
-import { fileSaveApi, storeFileApi } from "@/services";
+import { storeFileApi } from "@/services";
 import { Descriptions, Image, Input, QRCode } from "antd";
 import FileSaveHisTable from "@features/fa-disk-pages/pages/admin/disk/store/alls/cube/FileSaveHisTable";
 
@@ -16,11 +16,20 @@ export interface FileSaveDetailProps {
  */
 export default function FileSaveDetail({id}: FileSaveDetailProps) {
   const [data, setData] = useState<Disk.StoreFile>();
+  const [previewUrl, setPreviewUrl] = useState<string>();
 
   useEffect(() => {
+    let active = true;
     storeFileApi.getById(id).then(res => {
+      if (!active) return;
       setData(res.data)
+      if (res.data && FaUtils.isImg(res.data.type)) {
+        storeFileApi.createAccessResource(res.data.id).then(access => {
+          if (active) setPreviewUrl(access.data?.previewUrl);
+        });
+      }
     })
+    return () => { active = false; };
   }, [id])
 
   function handleSubmitInfo(e:any) {
@@ -51,13 +60,15 @@ export default function FileSaveDetail({id}: FileSaveDetailProps) {
       <Descriptions.Item label="创建时间">{data.crtTime}</Descriptions.Item>
       {FaUtils.isImg(data.type) && (
         <Descriptions.Item label="缩略图">
-          <Image
-            width={80}
-            src={fileSaveApi.genLocalGetFilePreview(data.fileId)}
-            preview={{
-              src: fileSaveApi.genLocalGetFile(data.fileId),
-            }}
-          />
+          {previewUrl && (
+            <Image
+              width={80}
+              src={previewUrl}
+              preview={{
+                src: previewUrl,
+              }}
+            />
+          )}
         </Descriptions.Item>
       )}
       <Descriptions.Item label="二维码">

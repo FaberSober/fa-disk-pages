@@ -5,7 +5,7 @@ import { Drawer, Dropdown, Space, Table, TableProps, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { Fa, FaHref, FaUtils } from "@fa/ui";
 import { DownloadOutlined, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { fileSaveApi, storeFileTagApi } from "@/services";
+import { storeFileApi, storeFileTagApi } from "@/services";
 import { FileIcon } from "@/components";
 import StoreDirModal from "../modal/StoreDirModal";
 import FileSaveDetail from "./FileSaveDetail";
@@ -43,7 +43,17 @@ export default function FileTable({ dirId, onRefresh, onIntoDir, showPath, ...pr
   }
 
   function handleDownload(i: Disk.StoreFile) {
-    window.open(fileSaveApi.genLocalGetFile(i.fileId), "_blank")
+    const tab = window.open("about:blank", "_blank");
+    storeFileApi.createAccessResource(i.id).then(res => {
+      if (res.data?.downloadUrl) {
+        const url = new URL(res.data.downloadUrl, window.location.origin);
+        if (tab) tab.location.href = url.toString();
+        else window.location.href = url.toString();
+      } else {
+        tab?.close();
+        FaUtils.showResponse(res, '下载文件');
+      }
+    }).catch(() => tab?.close());
   }
 
   function handleEdit(i: Disk.StoreFile) {
